@@ -1,0 +1,80 @@
+
+
+{{ dateMaintenant | date : "dd/MM/yyyy hh:mm:ss" }} 
+
+<div *ngIf="listeUtilisateur.length > 0">
+  Il y a {{ listeUtilisateur.length }} utilisateur(s) !
+</div>
+<br />
+
+<a
+  id="btnAjoutUtilisateur"
+  class="btn btn-outline-primary"
+  routerLink="/ajout-utilisateur"
+  *ngIf="isAdmin"
+>
+  <mat-icon>add</mat-icon> &nbsp;&nbsp; Ajouter un utilisateur</a
+>
+<br /><br /><br />
+
+
+
+<div class="container">
+  <div class="row">
+    <div *ngFor="let utilisateur of listeUtilisateur" class="col-6">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar></div>
+          <mat-card-title>{{utilisateur | fullname }}</mat-card-title>
+          <mat-card-subtitle>
+            <span [class.titre-administrator]="utilisateur | isAdmin">
+              {{ (utilisateur | isAdmin) ? "Admin" : "Utilisateur" }}
+            </span>
+            <span> <i>Membre depuis : {{utilisateur.createdAt | date : "dd/MM/yyyy"}}</i></span>&nbsp;
+            <span> <i>Maj : {{utilisateur.updateAt | date : "dd/MM/yyyy"}}</i></span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <img
+          mat-card-image
+          [attr.src]="utilisateur.imageProfil"
+          alt="Photo profil"
+        />
+        <br />
+        <mat-card-content>
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz
+            breeds of dog from Japan. A small, agile dog that copes very well
+            with mountainous terrain, the Shiba Inu was originally bred for
+            hunting.
+          </p>
+          <br />
+        </mat-card-content>
+        <mat-card-actions>
+          <a
+            [routerLink]="['/edit-utilisateur', utilisateur.id]"
+            class="btn btn-outline-warning"
+            *ngIf="isAdmin"
+          >
+            <mat-icon fontIcon="edit"></mat-icon> &nbsp; Modifier
+          </a>
+
+          <button
+            (click)="onDeleteUser(utilisateur.id)"
+            class="btn btn-outline-danger"
+            *ngIf="isAdmin"
+          >
+            <mat-icon fontIcon="delete"></mat-icon> &nbsp; Supprimer
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <br />
+    </div>
+  </div>
+</div>
+
+<!-- <li>
+      Utilisateur : {{ Utilisateur.nom + " " + Utilisateur.prenom }}
+      <button (click)="onDeleteUser(Utilisateur.id)" mat-raised-button color="warn">
+        Supprimer
+      </button>
+    </li> -->

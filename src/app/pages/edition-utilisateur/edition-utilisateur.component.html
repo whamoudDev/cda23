@@ -1,0 +1,102 @@
+<ng-container [ngSwitch]="codeRetour">
+  <form
+    *ngSwitchDefault=""
+    class="container"
+    (ngSubmit)="onSubmit()"
+    [formGroup]="formulaire"
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="formulaire.get('email')?.hasError('email')"
+        >Email invalid</mat-error
+      >
+      <mat-error *ngIf="formulaire.get('email')?.hasError('required')"
+        >Email obligatoire</mat-error
+      >
+    </mat-form-field>
+
+    <input
+      #fileSelector
+      type="file"
+      style="display: none"
+      (change)="onImageSelectionne($event)"
+    />
+    <button
+      class="btn btn-outline-success"
+      id="btnAttachFile"
+      mati-mini-fab
+      color="accent"
+      type="button"
+      (click)="fileSelector.click()"
+    >
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    
+    <span>{{
+      fichier != null ? fichier.name : "Aucun fichier selectionné"
+    }}</span><br />
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom" />
+      <mat-error *ngIf="formulaire.get('nom')?.hasError('required')"
+        >Nom obligatoire</mat-error
+      >
+      <mat-error *ngIf="formulaire.get('nom')?.hasError('minlength')"
+        >Nom trop court (
+        {{ formulaire.get("nom")?.getError("minlength").actualLength }}/
+        {{
+          formulaire.get("nom")?.getError("minlength").requiredLength
+        }})</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Prenom</mat-label>
+      <input matInput formControlName="prenom" />
+      <mat-error>Prenom obligatoire</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Pays</mat-label>
+      <mat-select formControlName="pays" [compareWith]="comparePays">
+        <!-- <mat-select [(value)]="idPaysSelectionne"> -->
+        <!-- [()] double biding change la valeur du composant et de la variable en même temps-->
+        <mat-option *ngFor="let pays of listePays" [value]="pays">
+          {{ pays.nom }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div id="formZoneBtn">
+      <button
+        [disabled]="!formulaire.valid"
+        id="btnFormAjouter"
+        class="btn btn-primary"
+        type="submit"
+      >
+        <mat-icon
+          [fontIcon]="idUtilisateur == null ? 'add' : 'edit'"
+        ></mat-icon>
+        &nbsp;
+        {{ idUtilisateur == null ? " Ajouter" : "Modifier" }}
+      </button>
+      <a class="btn btn-danger" routerLink="/accueil">Annuler</a>
+    </div>
+  </form>
+
+  <ng-template *ngSwitchCase="404">
+    <h2>Cet utilisateur n'existe pas (il a peut être été supprimé)</h2>
+    <a class="btn btn-outline-primary" routerLink="/accueil">
+      Retour à l'accueil
+    </a>
+  </ng-template>
+  <ng-template *ngSwitchCase="500">
+    <h2>Erreur Inconnue</h2>
+    <p>Contactez l'administration en lui communiquant cette erreur</p>
+    <pre></pre>
+    <a class="btn btn-outline-danger"> Envoyer un rapport </a> &nbsp;
+    <a class="btn btn-outline-primary" routerLink="/accueil">
+      Retour à l'accueil
+    </a>
+  </ng-template>
+</ng-container>
