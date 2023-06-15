@@ -8,4 +8,4 @@ docker stop conteneur-cda23
 # Supprimer le conteneur existant
 docker rm conteneur-cda23
 # Lancer un nouveau conteneur
-docker run -d --name=conteneur-application -p 4200:80 front-cda23
+docker run -d --name=conteneur-cda23 -p 4200:80 front-cda23
