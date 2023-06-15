@@ -4,8 +4,8 @@ git pull
 # Construire l'image Docker
 docker build --no-cache -t front-cda23 .
 # Arreter le conteneur existant
-docker stop angularcda23
+docker stop conteneur-cda23
 # Supprimer le conteneur existant
-docker rm angularcda23
+docker rm conteneur-cda23
 # Lancer un nouveau conteneur
-docker run -d --name=angularcda23 -p 4200:80 front-cda23
+docker run -d --name=conteneur-cda23 -p 4200:80 front-cda23
